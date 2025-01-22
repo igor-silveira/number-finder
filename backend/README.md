@@ -115,7 +115,7 @@ The service can be configured using environment variables:
 
 - `PORT`: Server port (default: 8080)
 - `LOG_LEVEL`: Logging level [debug, info, error] (default: info)
-- `DATA_PATH`: Server port (default: 8080)
+- `DATA_PATH`: Path to the data file containing the sorted sequence
 
 ### Running Tests
 
