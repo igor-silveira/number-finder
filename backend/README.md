@@ -1,8 +1,10 @@
-# go-number-finder
+# Number Finder API
 
 A high-performance REST service that efficiently finds index positions in a sorted number sequence using binary search.
 
-## Features
+---
+
+## 🚀 Features
 
 - Fast binary search implementation for large sorted datasets
 - RESTful API using Fiber framework
@@ -10,61 +12,72 @@ A high-performance REST service that efficiently finds index positions in a sort
 - Structured logging
 - Graceful shutdown
 
-## Prerequisites
+---
+
+## 🛠 Prerequisites
 
 - Go 1.23 or higher
 - Make (optional, for using Makefile commands)
 
-## Installation
+---
+
+## 🔧 Installation
 
 1. Clone the repository:
-```bash
-git clone https://github.com/igor-silveira/number-finder.git
-cd backend
-```
+   ```bash
+   git clone https://github.com/igor-silveira/number-finder.git
+   cd backend
+   ```
 
 2. Install dependencies:
-```bash
-go mod download
-```
+   ```bash
+   go mod download
+   ```
 
 3. Copy the environment file:
-```bash
-cp .env.example .env
-```
+   ```bash
+   cp .env.example .env
+   ```
 
 4. Modify the `.env` file according to your needs:
-```env
-PORT=8080
-LOG_LEVEL=info
-DATA_PATH=data/input.txt
-```
+   ```env
+   PORT=8080
+   LOG_LEVEL=info
+   DATA_PATH=data/input.txt
+   ```
 
-## Usage
+---
+
+## ▶️ Usage
 
 1. Start the server:
-```bash
-go run cmd/server/main.go
-```
+   ```bash
+   go run cmd/server/main.go
+   ```
 
-2. The API will be available at `http://localhost:8080` (or your configured port)
+2. The API will be available at `http://localhost:8080` (or your configured port).
 
-### API Endpoints
+---
 
-#### GET /api/number/:value
+## 📖 API Endpoints
+
+### **GET** `/api/number/:value`
+
 Find the index of a number in the sorted sequence.
 
-##### Path Parameters
+#### Path Parameters
+
 - `value` (number, required): The number to find in the sequence
 
-##### Query Parameters
+#### Query Parameters
+
 - `thresholdPercentage` (float, optional): Percentage threshold for approximate matching
   - If provided, the service will try to find a value within this percentage threshold
   - Default value: `0.0`
-    
-Example:
 
-```http request
+**Example Request:**
+
+```http
 GET /api/number/42?thresholdPercentage=0.1
 ```
 
@@ -72,44 +85,38 @@ GET /api/number/42?thresholdPercentage=0.1
 
 - **Code:** 200 OK
 - **Content:**
-```json
-{
-    "index": 3,
-    "value": 100,
-    "is_approximate": false
-}
-```
+  ```json
+  {
+      "index": 3,
+      "value": 100,
+      "is_approximate": false
+  }
+  ```
 
-**Error Response:**
+**Error Responses:**
 
 - **Code:** 400 Bad Request
-- **Content:**
-```json
-{
-    "error": "Invalid value parameter"
-}
-```
+  ```json
+  {
+      "error": "Invalid value parameter"
+  }
+  ```
 
 - **Code:** 404 Not Found
-- **Content:**
-```json
-{
-    "error": "No value found within acceptable threshold"
-}
-```
+  ```json
+  {
+      "error": "No value found within acceptable threshold"
+  }
+  ```
 
-**Example:**
+**Example Command:**
 ```bash
 curl http://localhost:8080/api/number/100
 ```
 
-### Error Handling
+---
 
-If an exact match isn't found, the service will attempt to find the closest value within a 10% threshold. In this case, `is_approximate` will be set to `true` in the response.
-
-If no value is found within the threshold, an error message will be included in the response.
-
-## Configuration
+## ⚙️ Configuration
 
 The service can be configured using environment variables:
 
@@ -117,11 +124,17 @@ The service can be configured using environment variables:
 - `LOG_LEVEL`: Logging level [debug, info, error] (default: info)
 - `DATA_PATH`: Path to the data file containing the sorted sequence
 
-### Running Tests
+---
 
+## 🧪 Running Tests
+
+Run the test suite using Make:
 ```bash
 make test
 ```
 
-## License
+---
+
+## 📜 License
+
 This project is licensed under the MIT License - see the LICENSE file for details.
