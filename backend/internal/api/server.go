@@ -2,9 +2,11 @@ package api
 
 import (
 	"log/slog"
+	"net/url"
 	"time"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 	"github.com/gofiber/fiber/v2/middleware/requestid"
 )
@@ -36,6 +38,7 @@ func (s *Server) setupApp() {
 	s.app.Use(recover.New())
 	s.app.Use(requestid.New())
 	s.app.Use(s.logMiddleware)
+	s.app.Use(s.corsMiddleware())
 }
 
 func (s *Server) logMiddleware(c *fiber.Ctx) error {
@@ -48,6 +51,23 @@ func (s *Server) logMiddleware(c *fiber.Ctx) error {
 		slog.Duration("duration", time.Since(start)),
 	)
 	return err
+}
+
+func (s *Server) corsMiddleware() fiber.Handler {
+	return cors.New(cors.Config{
+		AllowOriginsFunc: func(origin string) bool {
+			u, err := url.Parse(origin)
+			if err != nil {
+				return false
+			}
+			if (u.Scheme == "http" || u.Scheme == "https") && (u.Hostname() == "localhost" || u.Hostname() == "127.0.0.1") {
+				return true
+			}
+			return false
+		},
+		AllowHeaders: "Origin, Accept, Content-Type, nOrigin, X-Requested-With",
+		AllowMethods: "GET,OPTIONS",
+	})
 }
 
 func (s *Server) Start(port string) error {
