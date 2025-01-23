@@ -40,9 +40,9 @@ export default function NumberFinder() {
 
                 if (!response.ok) {
                     if (response.status === 400) {
-                        throw new Error(data.error || "Invalid value parameter")
+                        throw new Error(data.message || "Invalid value parameter")
                     } else if (response.status === 404) {
-                        throw new Error(data.error || "No value found within acceptable threshold")
+                        throw new Error(data.message || "No value found within acceptable threshold")
                     } else {
                         throw new Error("An unexpected error occurred")
                     }
