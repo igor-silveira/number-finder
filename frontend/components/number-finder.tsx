@@ -4,9 +4,10 @@ import {useCallback, useState} from "react"
 import {Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle} from "@/components/ui/card"
 import {Input} from "@/components/ui/input"
 import {Button} from "@/components/ui/button"
-import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert"
+import {Alert, AlertDescription} from "@/components/ui/alert"
 import {Loader2} from "lucide-react"
 import {Label} from "@/components/ui/label"
+import {Separator} from "@/components/ui/separator"
 
 interface ApiResponse {
     index: number
@@ -55,13 +56,13 @@ export default function NumberFinder() {
                 setIsLoading(false)
             }
         },
-        [number, thresholdPercentage],
+        [number, thresholdPercentage, apiUrl],
     )
 
     return (
-        <Card className="w-[350px]">
+        <Card className="w-full max-w-md">
             <CardHeader>
-                <CardTitle>Number Finder</CardTitle>
+                <CardTitle className="text-2xl font-bold">Number Finder</CardTitle>
                 <CardDescription>Find the index of a number in the sequence</CardDescription>
             </CardHeader>
             <CardContent>
@@ -102,26 +103,30 @@ export default function NumberFinder() {
                     </Button>
                 </form>
             </CardContent>
-            <CardFooter className="flex flex-col items-start">
-                {result && (
-                    <div className="space-y-2 w-full">
-                        <p>
-                            <strong>Index:</strong> {result.index}
-                        </p>
-                        <p>
-                            <strong>Value:</strong> {result.value}
-                        </p>
-                        <p>
-                            <strong>Is Approximate:</strong> {result.is_approximate ? "Yes" : "No"}
-                        </p>
-                    </div>
-                )}
-                {error && (
-                    <Alert variant="destructive" className="w-full">
-                        <AlertTitle>Error</AlertTitle>
-                        <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                )}
+            <Separator className="my-4"/>
+            <CardFooter>
+                <div className="w-full min-h-[120px] flex items-center justify-center">
+                    {isLoading ? (
+                        <Loader2 className="h-8 w-8 animate-spin text-primary"/>
+                    ) : result ? (
+                        <div className="space-y-2 w-full">
+                            <p className="font-medium">
+                                <span className="text-muted-foreground">Index:</span> {result.index}
+                            </p>
+                            <p className="font-medium">
+                                <span className="text-muted-foreground">Value:</span> {result.value}
+                            </p>
+                            <p className="font-medium">
+                                <span
+                                    className="text-muted-foreground">Is Approximate:</span> {result.is_approximate ? "Yes" : "No"}
+                            </p>
+                        </div>
+                    ) : error ? (
+                        <Alert variant="destructive" className="w-full flex items-center justify-center gap-2">
+                            <AlertDescription className="text-center"> {error} </AlertDescription>
+                        </Alert>
+                    ) : null}
+                </div>
             </CardFooter>
         </Card>
     )
