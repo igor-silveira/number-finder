@@ -104,14 +104,14 @@ func (f *Finder) Find(target int, thresholdPercentage float64) (*Result, error) 
 	}
 
 	if thresholdPercentage == 0 {
-		return nil, errors.New("no value found")
+		return nil, errors.New("number not found")
 	}
 
 	if result := f.findAdjacentWithinThreshold(target, thresholdPercentage, left, right); result != nil {
 		return result, nil
 	}
 
-	return nil, errors.New("no value found within acceptable threshold")
+	return nil, errors.New("number not found within acceptable threshold")
 }
 
 func NewFinder(filepath string) (FinderService, error) {
