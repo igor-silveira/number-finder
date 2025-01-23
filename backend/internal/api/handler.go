@@ -32,7 +32,7 @@ func NewHandler(finder service.FinderService, logger *slog.Logger) *Handler {
 
 func (h *Handler) RegisterRoutes(app *fiber.App) {
 	api := app.Group("/api")
-	api.Get("/find/:value", h.handleFind)
+	api.Get("/number/:value", h.handleFind)
 	api.Get("/health", h.handleHealthCheck)
 }
 

@@ -104,7 +104,7 @@ func (f *Finder) Find(target int, thresholdPercentage float64) (*Result, error) 
 	}
 
 	if thresholdPercentage == 0 {
-		return &Result{}, nil
+		return nil, errors.New("no value found")
 	}
 
 	if result := f.findAdjacentWithinThreshold(target, thresholdPercentage, left, right); result != nil {

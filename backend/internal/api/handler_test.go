@@ -129,7 +129,7 @@ func TestHandler_handleFind(t *testing.T) {
 			mockFinder := &MockFinder{FindFunc: tt.mockFindFunc}
 			app, _ := setupTest(mockFinder)
 
-			url := "/api/find/" + tt.value + "?thresholdPercentage=" + tt.threshold
+			url := "/api/number/" + tt.value + "?thresholdPercentage=" + tt.threshold
 			resp := performRequest(t, app, "GET", url)
 
 			assertResponse(t, resp, tt.expectedStatusCode, tt.expectedResponse)

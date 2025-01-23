@@ -1,7 +1,6 @@
 services:
   api:
     build: backend
-    container_name: server
     ports:
       - "${API_PORT:-8080}:8080"
     environment:
@@ -23,3 +22,16 @@ services:
           memory: 256M
         reservations:
           memory: 128M
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        - NEXT_PUBLIC_API_URL=http://localhost:${API_PORT:-8080}
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - api

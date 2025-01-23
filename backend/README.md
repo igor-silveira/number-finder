@@ -51,7 +51,7 @@ go run cmd/server/main.go
 
 ### API Endpoints
 
-#### GET /api/find/:value
+#### GET /api/number/:value
 Find the index of a number in the sorted sequence.
 
 ##### Path Parameters
@@ -65,7 +65,7 @@ Find the index of a number in the sorted sequence.
 Example:
 
 ```http request
-GET /api/find/42?thresholdPercentage=0.1
+GET /api/number/42?thresholdPercentage=0.1
 ```
 
 **Success Response:**
@@ -100,7 +100,7 @@ GET /api/find/42?thresholdPercentage=0.1
 
 **Example:**
 ```bash
-curl http://localhost:8080/api/find/100
+curl http://localhost:8080/api/number/100
 ```
 
 ### Error Handling
