@@ -15,10 +15,9 @@ type Finder struct {
 }
 
 type Result struct {
-	Index         int
-	Value         int
-	ErrorMessage  string
-	IsApproximate bool
+	Index         int  `json:"index"`
+	Number        int  `json:"number"`
+	IsApproximate bool `json:"is_approximate"`
 }
 
 type FinderService interface {
@@ -57,8 +56,9 @@ func (f *Finder) findExact(target int, left, right *int) *Result {
 		mid := (*left + *right) / 2
 		if f.numbers[mid] == target {
 			return &Result{
-				Index: mid,
-				Value: target,
+				Index:         mid,
+				Number:        target,
+				IsApproximate: false,
 			}
 		}
 		if f.numbers[mid] < target {
@@ -77,7 +77,7 @@ func (f *Finder) findAdjacentWithinThreshold(target int, thresholdPercentage flo
 		if diff := math.Abs(float64(f.numbers[left] - target)); diff < threshold {
 			return &Result{
 				Index:         left,
-				Value:         f.numbers[left],
+				Number:        f.numbers[left],
 				IsApproximate: true,
 			}
 		}
@@ -87,7 +87,7 @@ func (f *Finder) findAdjacentWithinThreshold(target int, thresholdPercentage flo
 		if diff := math.Abs(float64(f.numbers[right] - target)); diff < threshold {
 			return &Result{
 				Index:         right,
-				Value:         f.numbers[right],
+				Number:        f.numbers[right],
 				IsApproximate: true,
 			}
 		}

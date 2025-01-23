@@ -120,7 +120,7 @@ func TestFinder_Find(t *testing.T) {
 			thresholdPercent: 0.1,
 			wantResult: Result{
 				Index:         3,
-				Value:         7,
+				Number:        7,
 				IsApproximate: false,
 			},
 			wantErr: false,
@@ -131,7 +131,7 @@ func TestFinder_Find(t *testing.T) {
 			thresholdPercent: 0.2,
 			wantResult: Result{
 				Index:         4,
-				Value:         9,
+				Number:        9,
 				IsApproximate: true,
 			},
 			wantErr: false,
@@ -142,7 +142,7 @@ func TestFinder_Find(t *testing.T) {
 			thresholdPercent: 0,
 			wantResult:       Result{},
 			wantErr:          true,
-			wantErrMsg:       "no value found",
+			wantErrMsg:       "number not found",
 		},
 		{
 			name:             "no match within threshold",
@@ -150,7 +150,7 @@ func TestFinder_Find(t *testing.T) {
 			thresholdPercent: 0.1,
 			wantResult:       Result{},
 			wantErr:          true,
-			wantErrMsg:       "no value found within acceptable threshold",
+			wantErrMsg:       "number not found within acceptable threshold",
 		},
 	}
 
@@ -176,8 +176,8 @@ func TestFinder_Find(t *testing.T) {
 			if result.Index != tt.wantResult.Index {
 				t.Errorf("Find() Index = %v, want %v", result.Index, tt.wantResult.Index)
 			}
-			if result.Value != tt.wantResult.Value {
-				t.Errorf("Find() Value = %v, want %v", result.Value, tt.wantResult.Value)
+			if result.Number != tt.wantResult.Number {
+				t.Errorf("Find() Number = %v, want %v", result.Number, tt.wantResult.Number)
 			}
 			if result.IsApproximate != tt.wantResult.IsApproximate {
 				t.Errorf("Find() IsApproximate = %v, want %v", result.IsApproximate, tt.wantResult.IsApproximate)
@@ -202,8 +202,8 @@ func TestFinder_FindClosestWithinThreshold(t *testing.T) {
 			target:           7,
 			thresholdPercent: 0.1,
 			want: &Result{
-				Index: 3,
-				Value: 7,
+				Index:  3,
+				Number: 7,
 			},
 			checkApproximate: false,
 		},
@@ -213,7 +213,7 @@ func TestFinder_FindClosestWithinThreshold(t *testing.T) {
 			thresholdPercent: 0.2,
 			want: &Result{
 				Index:         4,
-				Value:         9,
+				Number:        9,
 				IsApproximate: true,
 			},
 			checkApproximate: true,
@@ -250,8 +250,8 @@ func TestFinder_FindClosestWithinThreshold(t *testing.T) {
 				t.Errorf("findClosestWithinThreshold() Index = %v, want %v", got.Index, tt.want.Index)
 			}
 
-			if got.Value != tt.want.Value {
-				t.Errorf("findClosestWithinThreshold() Value = %v, want %v", got.Value, tt.want.Value)
+			if got.Number != tt.want.Number {
+				t.Errorf("findClosestWithinThreshold() Number = %v, want %v", got.Number, tt.want.Number)
 			}
 
 			if tt.checkApproximate && got.IsApproximate != tt.want.IsApproximate {

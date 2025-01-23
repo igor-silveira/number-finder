@@ -41,7 +41,7 @@ func assertResponse(t *testing.T, resp *http.Response, expectedStatusCode int, e
 
 	var response interface{}
 	if expectedStatusCode == fiber.StatusOK {
-		var res Response
+		var res service.Result
 		err := json.NewDecoder(resp.Body).Decode(&res)
 		assert.NoError(t, err)
 		response = res
@@ -69,26 +69,26 @@ func TestHandler_handleFind(t *testing.T) {
 			value:     "42",
 			threshold: "0",
 			mockFindFunc: func(target int, thresholdPercentage float64) (*service.Result, error) {
-				return &service.Result{Index: 1, Value: 42, IsApproximate: false}, nil
+				return &service.Result{Index: 1, Number: 42, IsApproximate: false}, nil
 			},
 			expectedStatusCode: fiber.StatusOK,
-			expectedResponse: Response{
+			expectedResponse: service.Result{
 				Index:         1,
-				Value:         42,
+				Number:        42,
 				IsApproximate: false,
 			},
 		},
 		{
 			name:      "Valid request with approximate match",
 			value:     "42",
-			threshold: "10",
+			threshold: "0.1",
 			mockFindFunc: func(target int, thresholdPercentage float64) (*service.Result, error) {
-				return &service.Result{Index: 2, Value: 45, IsApproximate: true}, nil
+				return &service.Result{Index: 2, Number: 45, IsApproximate: true}, nil
 			},
 			expectedStatusCode: fiber.StatusOK,
-			expectedResponse: Response{
+			expectedResponse: service.Result{
 				Index:         2,
-				Value:         45,
+				Number:        45,
 				IsApproximate: true,
 			},
 		},
@@ -97,10 +97,10 @@ func TestHandler_handleFind(t *testing.T) {
 			value:     "not-a-number",
 			threshold: "0",
 			mockFindFunc: func(target int, thresholdPercentage float64) (*service.Result, error) {
-				return nil, errors.New("invalid value parameter")
+				return nil, errors.New("invalid number parameter")
 			},
 			expectedStatusCode: fiber.StatusBadRequest,
-			expectedResponse:   map[string]interface{}{"error": "Invalid value parameter"},
+			expectedResponse:   map[string]interface{}{"error": "Invalid number parameter"},
 		},
 		{
 			name:      "Invalid thresholdPercentage parameter",

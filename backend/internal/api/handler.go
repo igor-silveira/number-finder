@@ -17,12 +17,6 @@ type Error struct {
 	Message string `json:"message"`
 }
 
-type Response struct {
-	Index         int  `json:"index"`
-	Value         int  `json:"value"`
-	IsApproximate bool `json:"is_approximate"`
-}
-
 func NewHandler(finder service.FinderService, logger *slog.Logger) *Handler {
 	return &Handler{
 		finder: finder,
@@ -32,22 +26,22 @@ func NewHandler(finder service.FinderService, logger *slog.Logger) *Handler {
 
 func (h *Handler) RegisterRoutes(app *fiber.App) {
 	api := app.Group("/api")
-	api.Get("/number/:value", h.handleFind)
+	api.Get("/number/:number", h.handleFind)
 	api.Get("/health", h.handleHealthCheck)
 }
 
 func (h *Handler) handleFind(c *fiber.Ctx) error {
-	value := c.Params("value")
+	number := c.Params("number")
 	thresholdStr := c.Query("thresholdPercentage", "0")
 
-	h.logger.Debug("Received find request", "value", value)
+	h.logger.Debug("Received find request", "number", number)
 
-	target, err := strconv.Atoi(value)
+	target, err := strconv.Atoi(number)
 
 	if err != nil {
-		h.logger.Error("Invalid value parameter", "error", err)
+		h.logger.Error("Invalid number parameter", "error", err)
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-			"error": "Invalid value parameter",
+			"error": "Invalid number parameter",
 		})
 	}
 
@@ -74,20 +68,14 @@ func (h *Handler) handleFind(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusNotFound).JSON(errResponse)
 	}
 
-	response := Response{
-		Index:         result.Index,
-		Value:         result.Value,
-		IsApproximate: result.IsApproximate,
-	}
-
 	h.logger.Debug("Find operation completed",
 		"target", target,
 		"result_index", result.Index,
-		"result_value", result.Value,
+		"result_value", result.Number,
 		"is_approximate", result.IsApproximate,
 	)
 
-	return c.JSON(response)
+	return c.JSON(result)
 }
 
 func (h *Handler) handleHealthCheck(c *fiber.Ctx) error {

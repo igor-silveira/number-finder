@@ -11,7 +11,7 @@ import {Separator} from "@/components/ui/separator"
 
 interface ApiResponse {
     index: number
-    value: number
+    number: number
     is_approximate: boolean
 }
 
@@ -114,7 +114,7 @@ export default function NumberFinder() {
                                 <span className="text-muted-foreground">Index:</span> {result.index}
                             </p>
                             <p className="font-medium">
-                                <span className="text-muted-foreground">Value:</span> {result.value}
+                                <span className="text-muted-foreground">Value:</span> {result.number}
                             </p>
                             <p className="font-medium">
                                 <span
