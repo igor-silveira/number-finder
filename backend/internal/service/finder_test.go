@@ -141,7 +141,8 @@ func TestFinder_Find(t *testing.T) {
 			target:           8,
 			thresholdPercent: 0,
 			wantResult:       Result{},
-			wantErr:          false,
+			wantErr:          true,
+			wantErrMsg:       "no value found",
 		},
 		{
 			name:             "no match within threshold",
